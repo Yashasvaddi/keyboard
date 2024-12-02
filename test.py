@@ -1,5 +1,4 @@
 import streamlit as st
-import turtle as t
-    
-r = 50
-st.write(t.circle(r))
+i=1
+for i in range(1,10):
+    st.write(i)
