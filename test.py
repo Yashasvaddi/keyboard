@@ -1,44 +1,61 @@
 import streamlit as st
-import numpy as np
 
-def draw_circle(radius):
-    x = 0
-    y = radius
-    d = 3 - 2 * radius
-    points = []
 
-    while x <= y:
-        # Plot the eight points of the circle using symmetry
-        points.extend(get_circle_points(x, y))
-        if d < 0:
-            d += 4 * x + 6
-        else:
-            d += 4 * (x - y) + 10
-            y -= 1
-        x += 1
 
-    # Display the circle in a grid format
-    display_circle_on_grid(points)
 
-def get_circle_points(x, y):
-    # Return points in all octants using symmetry
-    return [(x, y), (-x, y), (x, -y), (-x, -y),
-            (y, x), (-y, x), (y, -x), (-y, -x)]
+def main():
+	"""A Simple Streamlit App For CSS Shape Generation """
+	st.title("Simple CSS Shape Generator")
 
-def display_circle_on_grid(points):
-    # Create a grid (as a numpy array of zeros)
-    grid_size = 20  # Define the grid size, large enough to contain the circle
-    grid = np.zeros((grid_size, grid_size), dtype=int)
+	activity = ['Design','About',]
+	choice = st.sidebar.selectbox("Select Activity",activity)
 
-    # Mark the points on the grid
-    for (x, y) in points:
-        if 0 <= x + grid_size // 2 < grid_size and 0 <= y + grid_size // 2 < grid_size:
-            grid[y + grid_size // 2, x + grid_size // 2] = 1  # Mark the point on grid
+	if choice == 'Design':
+		st.subheader("Design")
+		bgcolor = st.beta_color_picker("Pick a Background color")
+		fontcolor = st.beta_color_picker("Pick a Font Color","#fff")
 
-    # Display the grid
-    for row in grid:
-        row_str = ''.join(['#' if cell == 1 else '.' for cell in row])
-        st.markdown(row_str)
+		html_temp = """
+		<div style="background-color:{};padding:10px">
+		<h1 style="color:{};text-align:center;">Streamlit Simple CSS Shape Generator </h1>
+		</div>
+		"""
+		st.markdown(html_temp.format(bgcolor,fontcolor),unsafe_allow_html=True)
+		st.markdown("<div><p style='color:{}'>Hello Streamlit</p></div>".format(bgcolor),unsafe_allow_html=True)
 
-# Example usage:
-draw_circle(5)
+
+		st.subheader("Modify Shape")
+		bgcolor2 = st.sidebar.beta_color_picker("Pick a Bckground color")
+		height = st.sidebar.slider('Height Size',50,200,50)
+		width = st.sidebar.slider("Width Size",50,200,50)
+		# border = st.slider("Border Radius",10,60,10)
+		top_left_border = st.sidebar.number_input('Top Left Border',10,50,10)
+		top_right_border = st.sidebar.number_input('Top Right Border',10,50,10)
+		bottom_left_border = st.sidebar.number_input('Bottom Left Border',10,50,10)
+		bottom_right_border = st.sidebar.number_input('Bottom Right Border',10,50,10)
+
+		border_style = st.sidebar.selectbox("Border Style",["dotted","dashed","solid","double","groove","ridge","inset","outset","none","hidden"])
+		border_color = st.sidebar.beta_color_picker("Pick a Border Color","#654FEF")
+	
+
+		html_design = """
+		<div style="height:{}px;width:{}px;background-color:{};border-radius:{}px {}px {}px {}px;border-style:{};border-color:{}">
+		</div>
+		"""
+		st.markdown(html_design.format(height,width,bgcolor2,top_left_border,top_right_border,bottom_left_border,bottom_right_border,border_style,border_color),unsafe_allow_html=True)
+
+		if st.checkbox("View Results"):
+			st.subheader("Result")
+			result_of_design = html_design.format(height,width,bgcolor2,top_left_border,top_right_border,bottom_left_border,bottom_right_border,border_style,border_color)			
+			st.code(result_of_design)
+
+	if choice =="About":
+		st.subheader("About")
+		st.info("Jesus Saves @JCharisTech")
+		st.text("By Jesse E.Agbe(JCharis)")
+		st.success("Built with Streamlit")
+
+
+
+if _name_ == '_main_':
+	main()
