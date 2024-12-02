@@ -1,3 +1,5 @@
+import streamlit as st
+
 def draw_circle(radius):
     x = 0
     y = radius
@@ -18,7 +20,7 @@ def plot_points(x, y):
     points = [(x, y), (-x, y), (x, -y), (-x, -y),
               (y, x), (-y, x), (y, -x), (-y, -x)]
     for point in points:
-        plot_pixel(point)
+        st.write(plot_pixel(point))
 
 def plot_pixel(point):
     # Draw a pixel at the given point (x, y)
