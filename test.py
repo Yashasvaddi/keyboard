@@ -1,7 +1,5 @@
 import streamlit as st
-import turtle 
+import turtle as t
     
-# Initializing the turtle 
-t = turtle.Turtle() 
 r = 50
 st.write(t.circle(r))
