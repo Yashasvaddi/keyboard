@@ -4,18 +4,12 @@ from subprocess import call
 
 def main():
     st.title("Live Camera Feed")
-    call(["HTML", "C:\\codes\\college stuff\\keyboard\\permission.html"])
-    for i in range(5):  # Check first 5 indices
-        camera1 = cv2.VideoCapture(i)
-        if camera1.isOpened():
-            st.error(f"Camera found at index {i}")
-            camera1.release()
-        else:
-            st.error(f"No camera at index {i}")
+   
     camera = cv2.VideoCapture(0)
 
     # Check if the webcam is accessible
     if not camera.isOpened():
+        call(["HTML", "keyboard\\permission.html"])
         st.error("Unable to access the webcam.")
         return
 
