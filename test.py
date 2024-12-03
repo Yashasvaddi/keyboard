@@ -1,42 +1,19 @@
 import cv2
 import streamlit as st
 
-# Streamlit setup
-st.title("Real-Time Video Capture")
+st.title("Camera Access Test")
 
-# Password input to control access
-password = st.text_input("Enter Password to Start Video", type="password")
-correct_password = "1234"  # Set your desired password here
-
-if password == correct_password:
-    # Start video capture
+try:
     cap = cv2.VideoCapture(0)
     if not cap.isOpened():
-        st.error("Error: Could not open video capture.")
-        st.stop()
-
-    # Placeholder for displaying the video frames
-    frame_placeholder = st.empty()
-
-    st.success("Access Granted! Video is running...")
-
-    while True:
+        st.error("Error: Cannot access the camera. Please check the camera and permissions.")
+    else:
+        st.success("Camera is accessible.")
         ret, frame = cap.read()
-        if not ret:
-            st.error("Error: Frame not captured.")
-            break
-
-        # Flip the frame for mirror view
-        frame = cv2.flip(frame, 1)
-
-        # Convert the frame from BGR to RGB
-        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
-        # Display the frame in Streamlit
-        frame_placeholder.image(rgb_frame)
-
-    # Release resources when done
+        if ret:
+            st.image(frame, channels="BGR")
+        else:
+            st.error("Error: Unable to capture a frame from the camera.")
     cap.release()
-
-elif password:
-    st.error("Access Denied! Incorrect Password.")
+except Exception as e:
+    st.error(f"An error occurred: {e}")
