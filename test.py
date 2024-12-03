@@ -1,7 +1,5 @@
 import cv2
 import streamlit as st
-import webbrowser
-import os
 
 def main():
     st.title("Live Camera Feed")
@@ -10,9 +8,36 @@ def main():
 
     # Check if the webcam is accessible
     if not camera.isOpened():
-        html_file_path = os.path.abspath("keyboard/permission.html")
-        webbrowser.open(f"file://{html_file_path}")
-        st.error("Unable to access the webcam. Please grant camera permissions.")
+        <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Permission</title>
+</head>
+<body>
+    <h1>Camera Permission Example</h1>
+    <button id="start-camera">Request Camera Access</button>
+    <video id="video" autoplay playsinline style="display: none;"></video>
+    <script>
+        const startCameraButton = document.getElementById('start-camera');
+        const videoElement = document.getElementById('video');
+
+        startCameraButton.addEventListener('click', async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                videoElement.srcObject = stream;
+                videoElement.style.display = 'block';
+                alert('Camera access granted!');
+            } catch (error) {
+                alert('Camera access denied or not available.');
+                console.error('Error accessing camera:', error);
+            }
+        });
+    </script>
+</body>
+</html>
+        st.error("Unable to access the webcam.")
         return
 
     st.write("Click the button below to stop the live feed.")
