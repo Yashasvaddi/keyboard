@@ -7,7 +7,7 @@ try:
     for i in range(5):
         cap = cv2.VideoCapture(i)
         if cap.isOpened():
-            print(f"Camera found at index {i}")
+            st.error(f"Camera found at index {i}")
             break
 
     cap = cv2.VideoCapture(i)
