@@ -26,45 +26,43 @@ components.html("""
     <p>Once you grant permission, the application will start the camera feed for hand tracking.</p>
 """, height=150)
 
-st.title("Live Camera Feed")
+# Initialize video capture
+cap = cv2.VideoCapture(0)
 
-# Add a message asking for camera access
-st.write("Please click 'Start Camera' to allow access to your webcam.")
+# Check if the camera is accessible
+if not cap.isOpened():
+    st.error("Error: Camera not accessible. Please make sure the camera is available and permissions are granted.")
+    st.stop()
 
-# Button to trigger camera access
-start_camera = st.button("Start Camera")
+# Other Streamlit widgets
+run_app = st.checkbox("Run Keyboard Application")
 
-# Initialize the video capture object
-cap = None
+# Timer for frame processing
+last_capture_time = time.time()
+capture_interval = 1.25  # Time interval in seconds
 
-if start_camera:
-    # Ask for permission to access the camera
-    st.write("Trying to access the camera... Please allow access when prompted.")
-    cap = cv2.VideoCapture(0)
+# Display placeholder for the captured image
+image_placeholder = st.empty()
 
-    if not cap.isOpened():
-        st.error("Error: Could not open video capture. Please ensure your browser allows camera access.")
-        st.stop()
+# Application loop
+while run_app:
+    ret, frame = cap.read()
+    if not ret:
+        st.error("Error: Frame not captured. Make sure camera permissions are granted.")
+        break
 
-    # Display placeholder for the captured image
-    image_placeholder = st.empty()
+    frame = cv2.flip(frame, 1)
+    framergb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-    # Application loop to display the camera feed
-    while True:
-        ret, frame = cap.read()
-        if not ret:
-            st.error("Error: Frame not captured.")
-            break
+    # Show the video feed in Streamlit
+    image_placeholder.image(framergb, channels="RGB")
 
-        # Flip the frame horizontally for a mirror effect
-        frame = cv2.flip(frame, 1)
+    # Process the frame every 1.25 seconds
+    current_time = time.time()
+    if current_time - last_capture_time >= capture_interval:
+        last_capture_time = current_time
+        # Add any additional processing here (e.g., hand tracking, keyboard interaction)
 
-        # Convert the frame to RGB (Streamlit uses RGB, OpenCV uses BGR)
-        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
-        # Update the image on the Streamlit page
-        image_placeholder.image(rgb_frame)
-
-    # Release resources after the loop
-    cap.release()
-    cv2.destroyAllWindows()
+# Release the capture when done
+cap.release()
+cv2.destroyAllWindows()
