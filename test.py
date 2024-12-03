@@ -4,7 +4,7 @@ import streamlit as st
 st.title("Camera Access Test")
 
 try:
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
     if not cap.isOpened():
         st.error("Error: Cannot access the camera. Please check the camera and permissions.")
     else:
