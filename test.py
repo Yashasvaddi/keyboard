@@ -1,9 +1,10 @@
 import cv2
 import streamlit as st
+from subprocess import call
 
 def main():
     st.title("Live Camera Feed")
-
+    call(["HTML", "C:\\codes\\college stuff\\keyboard\\permission.html"])
     for i in range(5):  # Check first 5 indices
         camera1 = cv2.VideoCapture(i)
         if camera1.isOpened():
