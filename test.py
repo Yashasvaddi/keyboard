@@ -4,13 +4,13 @@ import streamlit as st
 def main():
     st.title("Live Camera Feed")
 
-    camera1 = cv2.VideoCapture(1)  # Try other indices if needed
-    if not camera1.isOpened():
-        st.error("Unable to access the camera.")
-    else:
-        st.error("Camera is accessible.")
-        camera1.release()
-    # Access the webcam
+    for i in range(5):  # Check first 5 indices
+        camera1 = cv2.VideoCapture(i)
+        if camera1.isOpened():
+            st.error(f"Camera found at index {i}")
+            camera1.release()
+        else:
+            st.error(f"No camera at index {i}")
     camera = cv2.VideoCapture(0)
 
     # Check if the webcam is accessible
