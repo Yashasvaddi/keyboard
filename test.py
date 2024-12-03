@@ -4,7 +4,7 @@ import streamlit as st
 def main():
     st.title("Live Camera Feed")
 
-    camera1 = cv2.VideoCapture(0)  # Try other indices if needed
+    camera1 = cv2.VideoCapture(1)  # Try other indices if needed
     if not camera1.isOpened():
         st.error("Unable to access the camera.")
     else:
