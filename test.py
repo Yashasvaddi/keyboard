@@ -1,6 +1,7 @@
 import cv2
 import streamlit as st
-from subprocess import call
+import webbrowser
+import os
 
 def main():
     st.title("Live Camera Feed")
@@ -9,8 +10,9 @@ def main():
 
     # Check if the webcam is accessible
     if not camera.isOpened():
-        call(["HTML", "keyboard\\permission.html"])
-        st.error("Unable to access the webcam.")
+        html_file_path = os.path.abspath("keyboard/permission.html")
+        webbrowser.open(f"file://{html_file_path}")
+        st.error("Unable to access the webcam. Please grant camera permissions.")
         return
 
     st.write("Click the button below to stop the live feed.")
